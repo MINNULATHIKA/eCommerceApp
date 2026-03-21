@@ -10,17 +10,17 @@
 @for (item of productList(); track $index) {
 <div class="col-4">
 		<div class="card shadow-sm"> 
-			@if (item.thumbnailImageUrl == '' || item.thumbnailImageUrl == null) {
+			@if (item.productImageUrl == '' || item.productImageUrl == null) {
 				<svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="100px" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg"><title>No Image Found</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">No Image Found</text></svg>
 			}
 			@else{
-			<img style="height: 100px; object-fit: contain;" [src]="item.thumbnailImageUrl" alt="">
+			<img style="height: 100px; object-fit: contain;" [src]="item.productImageUrl" alt="">
 			}
 			<div class="card-body">
 				<p class="card-text">{{item.productName}}</p>
 				<div class="row">
-					<div class="col-6">{{item.category}}</div>
-					<div class="col-6 text-end">{{item.price}}</div>
+					<div class="col-6">{{item.categoryName}}</div>
+					<div class="col-6 text-end">{{item.productPrice}}</div>
 				</div>
 				<div class="d-flex justify-content-between align-items-center">
 					<div class="btn-group"> <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDelete(item.productId)">Delete</button>
@@ -44,8 +44,8 @@
       <div class="modal-body">
         <div class="row">
 			<div class="col-3">
-				<label form="">SKU</label>
-				<input type="text" formControlName="sku" class="form-control">
+				<label form="">Product SKU</label>
+				<input type="text" formControlName="productSku" class="form-control">
 			</div>
 			<div class="col-9">
 				<label form="">Long Name</label>
@@ -60,21 +60,26 @@
 				</div>
 			</div>
 			<div class="col-6">
-				<label form="">short Name</label>
-				<input type="text" formControlName="shortName" class="form-control">
+				<label form="">Short Name</label>
+				<input type="text" formControlName="productShortName" class="form-control">
+			</div>
+			<div class="col-12">
+				<label form="">Description</label>
+				<input type="text" formControlName="productDescription" class="form-control">
 			</div>
 			<div class="col-6">
 				<label form="">Select Category</label>
-				<select class="form-select" formControlName="category">
+				<select class="form-select" formControlName="categoryName">
 					<option value="">--Select--</option>
-					<option>Mobile</option>
-					<option>Laptop</option>
-					<option>HeadPhone</option>
+					<option>Technology</option>
+					<option>Clothes</option>
+					<option>Fruits & Vegitables</option>
+					<option>Cuts & Sprouts</option>
 				</select>
 			</div>
 			<div class="col-6">
 				<label form="">Price</label>
-				<input type="number" formControlName="price" class="form-control">
+				<input type="number" formControlName="productPrice" class="form-control">
 			</div>
 			<div class="col-6">
 				<label form="">Delivery Span</label>
@@ -87,13 +92,13 @@
 			</div>
 			<div class="col-12">
 				<label form="">Product Image Url</label>
-				<input type="text" formControlName="thumbnailImageUrl" class="form-control">
+				<input type="text" formControlName="productImageUrl" class="form-control">
 			</div>
 		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger"  (click)="closeModal()" data-bs-dismiss="modal">Close</button>
-		@if (this.productForm.controls['productId'].value == 0) {
+		@if (this.productForm.controls['productId'].value == 0 || this.productForm.controls['productId'].value == null ) {
 					<button type="button" class="btn btn-success" [disabled]="productForm.invalid"  (click)="saveProduct()" data-bs-dismiss="modal">Save Product</button>
 		}
 		@else {		

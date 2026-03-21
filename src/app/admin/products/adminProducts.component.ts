@@ -29,17 +29,19 @@ export class AdminProductsComponent implements OnInit {
     this.productForm = new FormGroup({
       productId: new FormControl(this.productObj.productId),
       productName: new FormControl(this.productObj.productName, [Validators.required,Validators.minLength(4)]),
-      shortName: new FormControl(this.productObj.shortName),
-      category: new FormControl(this.productObj.category),
-      sku: new FormControl(this.productObj.sku),
-      price: new FormControl(this.productObj.price),
-      thumbnailImageUrl: new FormControl(this.productObj.thumbnailImageUrl),
-      deliveryTimeSpan: new FormControl(this.productObj.deliveryTimeSpan)
+      productShortName: new FormControl(this.productObj.productShortName),
+      categoryId: new FormControl(this.productObj.categoryId),
+      productSku: new FormControl(this.productObj.productSku),
+      productPrice: new FormControl(this.productObj.productPrice),
+      productImageUrl: new FormControl(this.productObj.productImageUrl),
+      deliveryTimeSpan: new FormControl(this.productObj.deliveryTimeSpan),
+      createdDate : new FormControl(this.productObj.createdDate),
+      productDescription : new FormControl(this.productObj.productDescription),
     })
   }
   loadProducts() {
-    this.productSrv.getAllProducts().subscribe((res: Iproduct[]) => {
-      this.productList.set(res);
+    this.productSrv.getAllProducts().subscribe((res: any) => {
+      this.productList.set(res.data);      
     })
   }
 
@@ -60,6 +62,9 @@ export class AdminProductsComponent implements OnInit {
   }
 
   saveProduct() {
+this.productForm.patchValue({
+  createdDate: new Date().toISOString().split('T')[0]
+});
     this.productSrv.saveProduct(this.productForm.value).subscribe((res: Iproduct) => {
       alert('Product Created');
       this.loadProducts();
