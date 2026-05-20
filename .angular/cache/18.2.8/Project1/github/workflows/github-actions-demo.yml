@@ -1,0 +1,5 @@
+name: Angular (Vite) CI
+
+on:
+  push:
+    branches:['']
