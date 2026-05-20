@@ -1,0 +1,11 @@
+.cart-popup {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: 600px;
+  max-height: 430px;
+  overflow-y: auto;
+  background: white;
+  z-index: 1000;
+  border-radius: 5px;
+}

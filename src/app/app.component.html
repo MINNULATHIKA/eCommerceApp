@@ -1,0 +1,172 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container-fluid"> <a class="navbar-brand" href="#">E-commerce APP</a> <button class="navbar-toggler"
+      type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+      aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+          </a>
+
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/products">Products</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+      <form class="d-flex" role="search"> <input class="form-control me-2" type="search" placeholder="Search"
+          aria-label="Search"> <button class="btn btn-outline-success me-2" type="submit">Search</button> </form>
+      @if(loggedUserData.custId == 0){<button class="btn btn-success me-2" (click)="openLoginPopup()">Login</button>    
+      <button class="btn btn-success me-2" (click)="openModalPopup()">Register</button>
+    } @else{
+      <button class="btn btn-primary me-2">{{loggedUserData.name}}</button>    
+      <button class="btn btn-success me-2" (click)="logOff()">LogOff</button> 
+    }   
+<div class="position-relative d-inline-block">
+
+  <a class="link-secondary me-3"
+     (click)="showCartPopup()">
+    <i class="fa fa-shopping-cart text-white"></i>
+  </a>
+
+  <div *ngIf="isCartPopUpOpen"
+       class="cart-popup shadow"
+       (click)="$event.stopPropagation()">
+
+    <div class="card m-0 border-0">
+      <div class="row g-0">
+        
+        <div class="col-md-8 cart">
+          <div class="title p-2">
+            <div class="row">
+              <div class="col"><h6><b>Shopping Cart</b></h6></div>
+              <div class="col text-end text-muted">3 items</div>
+            </div>
+          </div>    
+
+          <!-- Item -->
+        @for (item of cartListObj; track $index) {
+  <div class="row border-top border-bottom m-0 p-2 align-items-center">
+    <div class="col-2">
+      <img class="img-fluid" [src]="item.productImageUrl">
+    </div>
+
+    <div class="col">
+      <div class="text-muted small">{{item.productShortName}}</div>
+      <div>{{item.productName}}</div>
+    </div>
+
+    <div class="col">
+      <button (click)="reduceCartQuantity(item)" class="ms-2  border-0 bg-transparent p-0">-</button>
+      <span class="border px-2">{{item.quantity}}</span>
+      <button (click)="addCartQuantity(item)" class="ms-2  border-0 bg-transparent p-0">+</button>
+    </div>
+
+    <div class="col text-end">
+      {{item.productPrice}}
+<button 
+    class="ms-2 text-danger border-0 bg-transparent p-0"
+    (click)="removeFromCart(item.cartId)">
+    &times;
+  </button>
+    </div>
+  </div>
+}
+          <!-- Repeat items here -->
+
+        </div>
+
+    <div class="col-md-4 summary p-2 bg-light">
+  <h6><b>Summary</b></h6>
+  <hr class="m-1">
+
+  <!-- Total Items -->
+  <div class="d-flex justify-content-between">
+    <span>ITEMS {{cartListObj.length}}</span>
+    <span>${{totalAmount}}</span>
+  </div>
+
+  <!-- Shipping -->
+  <small>SHIPPING</small>
+  <select class="form-select form-select-sm mb-2" [(ngModel)]="shippingCharge">
+    <option [ngValue]="5">Standard - $5.00</option>
+    <option [ngValue]="10">Express - $10.00</option>
+  </select>
+
+  <!-- Total -->
+  <div class="d-flex justify-content-between border-top pt-2">
+    <strong>Total</strong>
+    @if (totalAmount == 0) {    
+      <strong>$0</strong>
+    }
+    @else {
+    <strong>${{ totalAmount + shippingCharge}}</strong>
+    }
+  </div>
+
+  <button class="btn btn-primary w-100 mt-2 btn-sm">Checkout</button>
+</div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+    </div>
+  </div>
+</nav>
+
+<div id="myModal" class="modal fade" role="dialog" #registerModel>
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Register</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModalpopup()"></button>
+      </div>
+      <div class="modal-body" *ngIf="!isLogin">
+        <div class="col-12">
+          <label form = "">Name</label>
+          <input type="text" [(ngModel)]="userObj.name"  class="form-control">
+        </div>
+          <div class="col-12">
+          <label form = "">Mobile No</label>
+          <input type="text" [(ngModel)]="userObj.mobileNo" class="form-control">
+        </div>
+          <div class="col-12">
+          <label form = "">Password</label>
+          <input type="text" [(ngModel)]="userObj.password" class="form-control">
+        </div>
+      </div>
+
+       <div class="modal-body" *ngIf="isLogin">
+        <div class="col-12">
+          <label form = "">User Name</label>
+          <input type="text" [(ngModel)]="loginObj.userName"  class="form-control">
+        </div>
+          <div class="col-12">
+          <label form = "">Password</label>
+          <input type="text" [(ngModel)]="loginObj.userPassword" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="closeModalpopup()">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="registerNewUser()" *ngIf="!isLogin">Create User</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onLogin()" *ngIf="isLogin">Login</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<router-outlet />
